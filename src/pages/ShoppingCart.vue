@@ -4,7 +4,8 @@
       <div class="headerTitlle">
         <p><</p>
         <p>购物车</p>
-        <p @click="manageStatus = !manageStatus">管理</p>
+        <p @click="manageStatus = true" v-if="!manageStatus">管理</p>
+        <p @click="manageStatus = false" v-else>完成</p>
       </div>
     </header>
 
@@ -15,8 +16,8 @@
           <img src="../assets/false.png" alt="" v-else>
         </div>
         <div class="shoppingCheck" v-else>
-          <img src="../assets/true.png" alt="" v-if="item.deleteStatus">
-          <img src="../assets/false.png" alt="" v-else>
+          <img src="../assets/check.png" alt="" v-if="item.deleteStatus">
+          <img src="../assets/checkbox.png" alt="" v-else>
         </div>
         <div class="shoppingInfo">
           <div class="shoppingImgWrap">
@@ -52,8 +53,8 @@
 
       <footer v-else>
         <div class="checkAll" @click="changeAllChooiseStatus">
-          <img src="../assets/true.png" alt="" v-if="!changeAllDeleteStatus.length">
-          <img src="../assets/false.png" alt="" v-else>
+          <img src="../assets/check.png" alt="" v-if="!changeAllDeleteStatus.length">
+          <img src="../assets/checkbox.png" alt="" v-else>
           全选
         </div>
         <div class="price">
@@ -130,7 +131,20 @@
         this.shoppingList.map(item => {
           item.deleteStatus ? goodsIdList.push(item.id) : ''
         })
-        this.$store.dispatch('getDeleteGoods',goodsIdList)
+        //底部对话框
+        layer.open({
+          content: `确定删除${goodsIdList.length}个商品吗？`
+          ,btn: ['删除', '取消']
+          ,skin: 'footer'
+          ,yes: index => {
+            this.$store.dispatch('getDeleteGoods',goodsIdList)
+            //底部提示
+            layer.open({
+              content: `成功删除${goodsIdList.length}个商品`
+              ,skin: 'footer'
+            });
+          }
+        });
       }
     }
   }

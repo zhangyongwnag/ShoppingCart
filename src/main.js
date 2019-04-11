@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import store from '@/store'
 import router from './router'
+import layer from 'layui-layer'
 
 
 require('./mock'); //引入mock数据，关闭则注释该行
